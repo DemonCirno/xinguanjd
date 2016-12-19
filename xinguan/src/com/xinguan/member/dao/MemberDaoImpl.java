@@ -140,26 +140,27 @@ public class MemberDaoImpl implements IMemberDao {
 	}
 
 	@Override
-	public void updateMemberInfo(int memberID, Member member) {
+	public boolean updateMemberInfo(int memberID, Member member) {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
+		boolean flag = false;
 		String update_sql ="update tb_members "
-				+ "set memberNickname=?,memberSex=?,imagePath=? "
+				+ "set memberName=?,memberPhone=?"
 				+ "where memberID=?";
 		
 		try {
 			conn = JdbcUtils.getConnection();
 			pst = (PreparedStatement) conn.prepareStatement(update_sql);
-			pst.setString(1, member.getMemberNickname());
-			pst.setBoolean(2, member.isMemberSex());
-			pst.setString(3, member.getImagePath());
-			pst.setInt(4, memberID);
+			pst.setString(1, member.getMemberName());
+			pst.setString(2, member.getMemberPhone());
+			pst.setInt(3, memberID);
 			
 			int count = pst.executeUpdate();
 			if(count>0){
-				System.out.println("更新信息成功");
+				flag = true;
+				System.out.println("更新个人信息成功");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -167,5 +168,71 @@ public class MemberDaoImpl implements IMemberDao {
 		}finally{
 			JdbcUtils.release(conn, pst, rs);
 		}
+		return flag;
+	}
+
+	@Override
+	public void updateMemberImage(int memberID, Member member) {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		String update_sql ="update tb_members "
+				+ "set imagePath=? "
+				+ "where memberID=?";
+		
+		try {
+			conn = JdbcUtils.getConnection();
+			pst = (PreparedStatement) conn.prepareStatement(update_sql);
+			pst.setString(1, member.getImagePath());
+			pst.setInt(2, memberID);
+			
+			int count = pst.executeUpdate();
+			if(count>0){
+				System.out.println("更新头像成功");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			JdbcUtils.release(conn, pst, rs);
+		}
+	}
+
+	@Override
+	public Member findMemberByMemID(int memberID) {
+		// TODO Auto-generated method stub
+Member member = null;
+		
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		String select_sql = "select * from tb_members where memberID = ?";
+		
+		try {
+			conn = JdbcUtils.getConnection();
+			pst = (PreparedStatement) conn.prepareStatement(select_sql);
+			pst.setInt(1, memberID);
+			rs = (ResultSet) pst.executeQuery();
+			if(rs.next()){
+				member = new Member();
+				member.setMemberID(rs.getInt(1));
+				member.setMemberName(rs.getString(2));
+				member.setMemberNickname(rs.getString(3));
+				member.setMemberSex(rs.getBoolean(4));
+				member.setMemberStuID(rs.getInt(5));
+				member.setMemberPhone(rs.getString(6));
+				member.setPassword(rs.getString(7));
+				member.setImagePath(rs.getString(8));
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			JdbcUtils.release(conn,pst, rs);
+		}
+		
+		return member;
 	}
 }

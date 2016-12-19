@@ -3,7 +3,6 @@ package com.xinguan.reply.action;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -22,7 +21,6 @@ import com.xinguan.reply.dao.IReplyDao;
 import com.xinguan.reply.dao.ReplyFactory;
 import com.xinguan.utils.Page;
 import com.xinguan.utils.PageUtil;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsonValueProcessor;
@@ -34,7 +32,7 @@ public class ReplyListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String quesID = request.getParameter("quesID");
-		System.out.println(quesID);
+		System.out.println("quesID:"+quesID);
 		Map<String,Object> map = new HashMap<String,Object>();
 		
 		if(quesID != null && !"".equals(quesID)){
@@ -73,9 +71,10 @@ public class ReplyListServlet extends HttpServlet {
 			/**
 			 * 
 			 */
+			//获取当前回复页
 			int currentPage = 0;
 			String currentPagestr = request.getParameter("currentPage");
-			System.out.println(currentPagestr);
+			System.out.println("当前回复页:"+currentPagestr);
 			
 			if(currentPagestr == null || "".equals(currentPagestr)){
 				currentPage = 1;
@@ -83,15 +82,17 @@ public class ReplyListServlet extends HttpServlet {
 				currentPage = Integer.parseInt(currentPagestr);
 			}
 			IReplyDao replydao = ReplyFactory.createReplyImplInstance();
+			
 			Page page = PageUtil.createPage(5, replydao.countReply(id), currentPage);
 			List<Reply> replylist = replydao.findReplyByPageID(id, page);
+			
 			map.put("replylist", replylist);
 			JSONObject json = JSONObject.fromObject(map,jsonConfig);
 			System.out.println(json.toString());
 			response.getWriter().print(json.toString());
 		}
 	}
-
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);

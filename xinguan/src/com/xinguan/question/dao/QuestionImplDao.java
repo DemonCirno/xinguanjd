@@ -1,6 +1,7 @@
 package com.xinguan.question.dao;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class QuestionImplDao implements IQuesDao {
 			pst.setString(1,ques.getQuesTitle());
 			pst.setString(2, ques.getQuesContent());
 			pst.setString(3, ques.getQuesImagePath());
-			pst.setDate(4, ques.getQuesPublishTime());
+			pst.setTimestamp(4, new Timestamp(ques.getQuesPublishTime().getTime()));
 			pst.setInt(5, ques.getMemberID());
 			pst.setString(6, ques.getMemberName());
 			
@@ -90,8 +91,8 @@ public class QuestionImplDao implements IQuesDao {
 				ques.setQuesID(rs.getInt(1));
 				ques.setQuesTitle(rs.getString(2));
 				ques.setQuesContent(rs.getString(3));
-				ques.setQuesPublishTime(rs.getDate(4));
-				ques.setQuesImagePath(rs.getString(5));
+				ques.setQuesImagePath(rs.getString(4));
+				ques.setQuesPublishTime(rs.getDate(5));
 				ques.setMemberID(rs.getInt(6));
 				ques.setMemberName(rs.getString(7));
 				list.add(ques);
@@ -124,8 +125,8 @@ public class QuestionImplDao implements IQuesDao {
 				ques.setQuesID(rs.getInt(1));
 				ques.setQuesTitle(rs.getString(2));
 				ques.setQuesContent(rs.getString(3));
-				ques.setQuesPublishTime(rs.getDate(4));
-				ques.setQuesImagePath(rs.getString(5));
+				ques.setQuesImagePath(rs.getString(4));
+				ques.setQuesPublishTime(rs.getDate(5));
 				ques.setMemberID(rs.getInt(6));
 				ques.setMemberName(rs.getString(7));
 				list.add(ques);
@@ -157,8 +158,8 @@ public class QuestionImplDao implements IQuesDao {
 				ques.setQuesID(rs.getInt(1));
 				ques.setQuesTitle(rs.getString(2));
 				ques.setQuesContent(rs.getString(3));
-				ques.setQuesPublishTime(rs.getDate(4));
-				ques.setQuesImagePath(rs.getString(5));
+				ques.setQuesImagePath(rs.getString(4));
+				ques.setQuesPublishTime(rs.getDate(5));
 				ques.setMemberID(rs.getInt(6));
 				ques.setMemberName(rs.getString(7));
 			}
@@ -167,5 +168,99 @@ public class QuestionImplDao implements IQuesDao {
 			e.printStackTrace();
 		}
 		return ques;
+	}
+
+	@Override
+	public List<Question> findQuesListByMemberID(int memberID) {
+		// TODO Auto-generated method stub
+		
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null; 
+		Question ques = null;
+		String find_ques_list = "select * from tb_question where memberID =? limit 0,5";
+		List<Question> list = new ArrayList<Question>();
+		try {
+			conn = JdbcUtils.getConnection();
+			pst = (PreparedStatement) conn.prepareStatement(find_ques_list);
+			pst.setInt(1, memberID);
+			rs =(ResultSet) pst.executeQuery();
+			while(rs.next()){
+				ques = new Question();
+				ques.setQuesID(rs.getInt(1));
+				ques.setQuesTitle(rs.getString(2));
+				ques.setQuesContent(rs.getString(3));
+				ques.setQuesImagePath(rs.getString(4));
+				ques.setQuesPublishTime(rs.getDate(5));
+				ques.setMemberID(rs.getInt(6));
+				ques.setMemberName(rs.getString(7));
+				list.add(ques);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public List<Question> findQuesListByMemberID_Page(int memberID, Page page) {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		List<Question> list = new ArrayList<Question>();
+		String sql_limit = "select * from tb_question where memberID = ? order by quesTime desc limit ?,?";
+		try {
+			conn = JdbcUtils.getConnection();
+			pst = (PreparedStatement) conn.prepareStatement(sql_limit);
+			pst.setInt(1, memberID);
+			pst.setInt(2, page.getBeginIndex());
+			pst.setInt(3, page.getEveryPage());
+			rs = (ResultSet) pst.executeQuery();
+			while(rs.next()){
+				Question ques = new Question();
+				
+				ques.setQuesID(rs.getInt(1));
+				ques.setQuesTitle(rs.getString(2));
+				ques.setQuesContent(rs.getString(3));
+				ques.setQuesImagePath(rs.getString(4));
+				ques.setQuesPublishTime(rs.getDate(5));
+				ques.setMemberID(rs.getInt(6));
+				ques.setMemberName(rs.getString(7));
+				list.add(ques);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			JdbcUtils.release(conn, pst, rs);
+		}
+		return list;
+	}
+
+	@Override
+	public boolean deleteQuesByID(int quesID) {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		boolean flag = false;
+		String delete_sql = "delete from tb_question where quesID=?";
+		
+		try {
+			conn = JdbcUtils.getConnection();
+			pst = (PreparedStatement) conn.prepareStatement(delete_sql);
+			pst.setInt(1, quesID);
+			int count = pst.executeUpdate();
+			if(count>0){
+				System.out.println("É¾³ý³É¹¦");
+				flag = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flag;
 	}
 }

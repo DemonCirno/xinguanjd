@@ -18,7 +18,7 @@ public class QuestionTest {
 		for (int i = 0; i <= 50; i++) {
 			ques.setQuesTitle(i+"");
 			ques.setQuesContent(i+"");
-			ques.setQuesPublishTime(new java.sql.Date(new Date().getTime()));
+			ques.setQuesPublishTime(new Date());
 			ques.setMemberID(i);
 			boolean flag = quesdao.quiz(ques);
 			System.out.println(flag);
@@ -49,5 +49,30 @@ public class QuestionTest {
 		for (Question question : list) {
 			System.out.println(question.getMemberID());
 		}
+	}
+	
+	@Test
+	public void tetFindQuesList(){
+		IQuesDao quesdao = QuestionFactory.createQuestionImplInstance();
+		List<Question> list = quesdao.findQuesListByMemberID(1);
+		for (Question question : list) {
+			System.out.println(question.getQuesID());
+		}
+	}
+	
+	@Test
+	public void testFindQuesListByPage(){
+		IQuesDao quesdao = QuestionFactory.createQuestionImplInstance();
+		Page page = PageUtil.createPage(5, quesdao.findAllQuesCount(), 1);
+		List<Question> list = quesdao.findQuesListByMemberID_Page(1, page);
+		for (Question question : list) {
+			System.out.println(question.getQuesID());
+		}
+	}
+	
+	@Test
+	public void testDelteQues(){
+		IQuesDao quesdao = QuestionFactory.createQuestionImplInstance();
+		quesdao.deleteQuesByID(69);
 	}
 }

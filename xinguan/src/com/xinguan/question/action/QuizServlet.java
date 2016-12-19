@@ -36,6 +36,7 @@ public class QuizServlet extends HttpServlet {
 		
 		Map<String,Object> info = new HashMap<String,Object>();
 		Map<String,String> map = new HashMap<String,String>();
+		
 		IQuesDao quesdao = QuestionFactory.createQuestionImplInstance();
 		
 		Member member = (Member) request.getAttribute("member");
@@ -91,7 +92,7 @@ public class QuizServlet extends HttpServlet {
 			ques.setQuesTitle(map.get("title"));
 			ques.setQuesContent(map.get("content"));
 			ques.setQuesImagePath(realpath);
-			ques.setQuesPublishTime((java.sql.Date) new Date());
+			ques.setQuesPublishTime(new Date());
 			boolean flag = quesdao.quiz(ques);
 			if(flag){
 				//³É¹¦

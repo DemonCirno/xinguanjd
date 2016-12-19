@@ -47,8 +47,16 @@ public class MemberDaoTest {
 		IMemberDao memberdao = MemberDaoFactory.createMemberDaoImpl();
 		Member member = new Member();
 		member.setMemberNickname("妮可妮可妮");
-		member.setMemberSex(false);
+		member.setMemberPhone("15204696480");
 		memberdao.updateMemberInfo(25, member);
+	}
+	
+	@Test
+	public void testUpdateImage(){
+		IMemberDao memberdao = MemberDaoFactory.createMemberDaoImpl();
+		Member member = new Member();
+		member.setImagePath("反正要放在D盘里");
+		memberdao.updateMemberImage(25, member);
 	}
 	
 }

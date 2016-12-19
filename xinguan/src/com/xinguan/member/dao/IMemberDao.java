@@ -25,6 +25,13 @@ public interface IMemberDao {
 	public Member findMemberByPhone(String phonenum);
 	
 	/**
+	 * 根据memberID查找成员
+	 * @param memberID
+	 * @return
+	 */
+	public Member findMemberByMemID(int memberID);
+	
+	/**
 	 * 重置密码
 	 * @param memberID
 	 * @param password
@@ -33,9 +40,16 @@ public interface IMemberDao {
 	public boolean resetPassword(int memberID,String password);
 	
 	/**
-	 * 更新个人信息
+	 * 更新个人信息(昵称，性别)
 	 * @param memberID
 	 * @param member
 	 */
-	public void updateMemberInfo(int memberID,Member member);
+	public boolean updateMemberInfo(int memberID,Member member);
+	
+	/**
+	 * 更新头像(昵称，性别)
+	 * @param memberID
+	 * @param member
+	 */
+	public void updateMemberImage(int memberID,Member member);
 }	

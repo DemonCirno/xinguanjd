@@ -1,6 +1,7 @@
 package com.xinguan.pojo;
 
 public class Member {
+	
 	private int memberID;
 	private String memberName;
 	private String memberNickname;

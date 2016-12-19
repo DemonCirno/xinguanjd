@@ -16,13 +16,11 @@ public class ReplyTest {
 	public void testaddReply(){
 		IReplyDao replydao = ReplyFactory.createReplyImplInstance();
 		for(int i=0;i<10;i++){
-		Reply reply = new Reply();
-		reply.setReplyContent("ÄãºÃ");
-		Date temp = new java.util.Date();
-		java.sql.Date date = new java.sql.Date(temp.getTime());
-		reply.setReplyTime(date);
-		reply.setQuesID(12);
-		replydao.reply(reply);
+			Reply reply = new Reply();
+			reply.setReplyContent("hello");
+			reply.setReplyTime(new Date());
+			reply.setQuesID(101);
+			replydao.reply(reply);
 		}
 	}
 	

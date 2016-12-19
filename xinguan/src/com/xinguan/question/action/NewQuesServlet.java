@@ -28,6 +28,10 @@ public class NewQuesServlet extends HttpServlet {
 		Map<String,Object> map = new HashMap<String,Object>();		
 		IQuesDao quesdao = QuestionFactory.createQuestionImplInstance();
 		List<Question> ques = quesdao.findQuesNew();
+		map.put("list", ques);
+		/*
+		 * 由于日期问题
+		 */
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor(){
 			
@@ -50,9 +54,10 @@ public class NewQuesServlet extends HttpServlet {
 				}
 				return value == "" ? "" : value.toString();
 			}
-			
 		});
-		map.put("list", ques);
+		/**
+		 *
+		 */
 		JSONObject json = JSONObject.fromObject(map,jsonConfig);
 		System.out.println(json.toString());
 		response.getWriter().print(json.toString());

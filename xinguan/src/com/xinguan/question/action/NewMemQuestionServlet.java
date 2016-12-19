@@ -7,45 +7,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.xinguan.pojo.Question;
 import com.xinguan.question.dao.IQuesDao;
 import com.xinguan.question.dao.QuestionFactory;
-import com.xinguan.utils.Page;
-import com.xinguan.utils.PageUtil;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsonValueProcessor;
 
-@WebServlet("/NextPageServlet")
-public class NextPageServlet extends HttpServlet {
+
+@WebServlet("/NewMemQuestionServlet")
+public class NewMemQuestionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String currentpage = request.getParameter("currentpage");
-		
-		System.out.println(currentpage);
-		
-		int currentPage = 0;
-		if(currentpage != null && !"".equals(currentpage)){
-			currentPage = Integer.parseInt(currentpage);
+		Map<String,Object> info = new HashMap<String,Object>();	
+		String quesID = request.getParameter("quesID");
+		int id = 0;
+		if(quesID != null){
+			id = Integer.parseInt(quesID);
 		}
-		
 		IQuesDao quesdao = QuestionFactory.createQuestionImplInstance();
-		
-		Map<String,Object> map = new HashMap<String,Object>();
-		
-		Page page = PageUtil.createPage(5, quesdao.findAllQuesCount(), currentPage);
-		
-		List<Question> list = quesdao.findQuesByPage(page);
-		map.put("list", list);
-		System.out.println(map.toString());
+		List<Question> list = quesdao.findQuesListByMemberID(id);
+		info.put("list", list);
 		/*
 		 * 由于日期问题
 		 */
@@ -71,15 +63,15 @@ public class NextPageServlet extends HttpServlet {
 				}
 				return value == "" ? "" : value.toString();
 			}
-			
 		});
 		/**
-		 * 
+		 *
 		 */
-		JSONObject json = JSONObject.fromObject(map,jsonConfig);
-		response.getWriter().print(json.toString());
+		JSONObject json = JSONObject.fromObject(info,jsonConfig);
 		System.out.println(json.toString());
+		response.getWriter().print(json.toString());
 	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);

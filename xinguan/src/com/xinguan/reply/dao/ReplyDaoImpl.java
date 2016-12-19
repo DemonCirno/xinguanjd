@@ -1,6 +1,7 @@
 package com.xinguan.reply.dao;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class ReplyDaoImpl implements IReplyDao {
 			conn = JdbcUtils.getConnection();
 			pst = (PreparedStatement) conn.prepareStatement(reply_insert);
 			pst.setString(1, reply.getReplyContent());
-			pst.setDate(2, reply.getReplyTime());
+			pst.setTimestamp(2, new Timestamp(reply.getReplyTime().getTime()));
 			pst.setInt(3, reply.getCount());
 			pst.setInt(4, reply.getMemberID());
 			pst.setInt(5, reply.getQuesID());

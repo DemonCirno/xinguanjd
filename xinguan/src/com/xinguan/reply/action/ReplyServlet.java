@@ -16,7 +16,11 @@ import com.xinguan.reply.dao.IReplyDao;
 import com.xinguan.reply.dao.ReplyFactory;
 
 import net.sf.json.JSONObject;
-
+/**
+ * ·¢²¼»Ø¸´
+ * @author cirno
+ *
+ */
 @WebServlet("/ReplyServlet")
 public class ReplyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
