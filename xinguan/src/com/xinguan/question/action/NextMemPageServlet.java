@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.xinguan.pojo.Member;
 import com.xinguan.pojo.Question;
 import com.xinguan.question.dao.IQuesDao;
 import com.xinguan.question.dao.QuestionFactory;
@@ -36,14 +37,9 @@ public class NextMemPageServlet extends HttpServlet {
 			if(currentpage != null && !"".equals(currentpage)){
 				currentPage = Integer.parseInt(currentpage);
 			}
-			
-		String quesID = request.getParameter("quesID");
-			System.out.println("Œ Ã‚ID"+quesID);
-		int id = 0;
-			if(quesID != null){
-				id = Integer.parseInt(quesID);
-			}
+		Member member = (Member) request.getSession().getAttribute("member");
 		
+		Integer id = member.getMemberID();
 		IQuesDao quesdao = QuestionFactory.createQuestionImplInstance();
 			
 		Map<String,Object> info = new HashMap<String,Object>();

@@ -22,6 +22,8 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/taobao-sdk-java-auto_1455552377940-20161124-source.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/activation.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mail.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/java-property-utils-1.9.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/cors-filter-2.4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

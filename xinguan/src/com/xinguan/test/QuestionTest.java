@@ -19,7 +19,7 @@ public class QuestionTest {
 			ques.setQuesTitle(i+"");
 			ques.setQuesContent(i+"");
 			ques.setQuesPublishTime(new Date());
-			ques.setMemberID(i);
+			ques.setMemberID(13);
 			boolean flag = quesdao.quiz(ques);
 			System.out.println(flag);
 		}

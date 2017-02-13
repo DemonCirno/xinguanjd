@@ -113,7 +113,7 @@ public class QuestionImplDao implements IQuesDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		List<Question> list = new ArrayList<Question>();
-		String sql_limit = "select * from tb_question order by quesTime desc limit 0,5";
+		String sql_limit = "select * from tb_question order by quesTime desc limit 0,8";
 		try {
 			conn = JdbcUtils.getConnection();
 			pst = (PreparedStatement) conn.prepareStatement(sql_limit);
